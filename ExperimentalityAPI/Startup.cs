@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +28,22 @@ namespace ExperimentalityAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("V1",
+                    new Microsoft.OpenApi.Models.OpenApiInfo
+                    {
+                        Title = "Prueba Experimentality API",
+                        Description = "Proyecto evaluación Experimentality",
+                        Version = "V1"
+                    });
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +55,14 @@ namespace ExperimentalityAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/V1/swagger.json", "Prueba Experimentality API");
+                options.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

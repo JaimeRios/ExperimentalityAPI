@@ -7,8 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ExperimentalityAPI.Controllers
 {
+    /// <summary>
+    /// Controlador de prueba
+    /// </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -23,6 +26,10 @@ namespace ExperimentalityAPI.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Ejemplo basico de proceso
+        /// </summary>
+        /// <returns>Datos</returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
