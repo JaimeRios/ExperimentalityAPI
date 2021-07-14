@@ -1,5 +1,4 @@
 ﻿using ExperimentalityAPI.Entities;
-using ExperimentalityAPI.Model;
 using ExperimentalityAPI.Utils.MongoDB;
 using System;
 using System.Collections.Generic;

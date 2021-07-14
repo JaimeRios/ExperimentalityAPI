@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ExperimentalityAPI.Model;
 using ExperimentalityAPI.Repository.Interfaces;
 using System.IO;
 using ExperimentalityAPI.Models;
+using ExperimentalityAPI.Services.Interfaces;
 
 namespace ExperimentalityAPI.Controllers
 {
@@ -17,33 +17,24 @@ namespace ExperimentalityAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IMongoRepository<ProductDB> _productsRepository;
+        private readonly IProductService _service;
 
-        public ProductController(ILogger<ProductController> logger, 
-            IMongoRepository<ProductDB> productRepository)
+        public ProductController(ILogger<ProductController> logger,
+            IProductService service)
         {
             _logger = logger;
-            _productsRepository = productRepository;
+            _service = service;
         }
+
         /// <summary>
         /// Register Product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        [HttpPost("registerProduct")]
-        public async Task AddPerson([FromForm] Product product)
+        [HttpPost("AddProduct")]
+        public async Task AddProduct([FromForm] Product product)
         {
-            try
-            {
-                ProductDB newData = new ProductDB();
-                newData.fromProduct(product);
-                await _productsRepository.InsertOneAsync(newData);
-            }
-            catch (Exception exc)
-            {
-
-                var message = exc.Message;
-            }
+            await _service.AddProduct(product);
             
         }
 
@@ -52,12 +43,9 @@ namespace ExperimentalityAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("getProductData")]
-        public IEnumerable<ProductDB> GetPeopleData()
+        public IEnumerable<ProductDB> Get()
         {
-            var products = _productsRepository.AsQueryable();/*.FilterBy(
-                filter => filter.name != ""
-            );*/
-            return products;
+            return _service.Get();
         }
 
         /// <summary>
@@ -65,11 +53,11 @@ namespace ExperimentalityAPI.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("createProduct")]
-        public IActionResult createProduct([FromForm] Product product)
-        {
-            return Ok();
-        }
+        //[HttpPost]
+        //[Route("createProduct")]
+        //public IActionResult createProduct([FromForm] Product product)
+        //{
+        //    return Ok();
+        //}
     }
 }

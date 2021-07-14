@@ -8,6 +8,8 @@ using ExperimentalityAPI.MongoDB;
 using ExperimentalityAPI.MongoDB.Interfaces;
 using ExperimentalityAPI.Repository;
 using ExperimentalityAPI.Repository.Interfaces;
+using ExperimentalityAPI.Services;
+using ExperimentalityAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace ExperimentalityAPI
 {
@@ -48,7 +51,13 @@ namespace ExperimentalityAPI
                     {
                         Title = "Prueba Experimentality API",
                         Description = "Proyecto evaluación Experimentality",
-                        Version = "V1"
+                        Version = "V1",
+                        Contact = new OpenApiContact() 
+                        {
+                            Name = "Jaime Rios",
+                            Email = "jaimearios1986@gmail.com",
+                            Url = new Uri("https://www.linkedin.com/in/jaime-alberto-rios-palacio/")
+                        }
                     });
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -56,6 +65,12 @@ namespace ExperimentalityAPI
                 options.IncludeXmlComments(xmlPath);
 
             });
+
+
+            #region Services
+            services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IProductService, ProductService>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

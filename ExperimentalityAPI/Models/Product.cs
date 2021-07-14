@@ -1,5 +1,4 @@
 ﻿using ExperimentalityAPI.Entities;
-using ExperimentalityAPI.Models;
 using ExperimentalityAPI.Utils.MongoDB;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ExperimentalityAPI.Model
+namespace ExperimentalityAPI.Models
 {
     /// <summary>
     /// Products 
