@@ -9,6 +9,7 @@ using ExperimentalityAPI.Repository.Interfaces;
 using System.IO;
 using ExperimentalityAPI.Models;
 using ExperimentalityAPI.Services.Interfaces;
+using ExperimentalityAPI.Models.Product;
 
 namespace ExperimentalityAPI.Controllers
 {
@@ -18,7 +19,11 @@ namespace ExperimentalityAPI.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _service;
-
+        /// <summary>
+        /// Constructor ProductController
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="service"></param>
         public ProductController(ILogger<ProductController> logger,
             IProductService service)
         {
@@ -32,10 +37,10 @@ namespace ExperimentalityAPI.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [HttpPost("AddProduct")]
-        public async Task AddProduct([FromForm] Product product)
+        [ProducesResponseType(typeof(ResultOperationProject<Product>), 200)]
+        public async Task<ResultOperationProject<Product>> AddProduct([FromForm] ProductCreate product)
         {
-            await _service.AddProduct(product);
-            
+            return await _service.AddProduct(product);
         }
 
         /// <summary>
@@ -43,7 +48,7 @@ namespace ExperimentalityAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("getProductData")]
-        public IEnumerable<ProductDB> Get()
+        public IEnumerable<Product> Get()
         {
             return _service.Get();
         }

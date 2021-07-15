@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExperimentalityAPI.Models
+namespace ExperimentalityAPI.Models.Country
 {
     /// <summary>
     /// Model class to control maximun discount percentaje allowed

@@ -66,6 +66,10 @@ namespace ExperimentalityAPI
 
             });
 
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
 
             #region Services
             services.AddTransient<ICountryService, CountryService>();

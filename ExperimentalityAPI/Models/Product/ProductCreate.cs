@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ExperimentalityAPI.Models
+namespace ExperimentalityAPI.Models.Product
 {
     /// <summary>
     /// Products 
     /// </summary>
     [BsonCollection("Products")]
-    public class Product
+    public class ProductCreate
     {
         public string name { get; set; }
         public string description { get; set; }
@@ -22,7 +22,7 @@ namespace ExperimentalityAPI.Models
         public IFormFile backImage { get; set; }
         public string country { get; set; }
 
-        public void fromProduct(ProductDB product)
+        public void fromProduct(Product product)
         {
             this.name = product.name;
             this.description = product.description;

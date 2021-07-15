@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExperimentalityAPI.Models
+namespace ExperimentalityAPI.Models.Product
 {
     [BsonCollection("Products")]
-    public class ProductDB : Document
+    public class Product : Document
     {
         public string name { get; set; }
         public string description { get; set; }
@@ -19,10 +19,10 @@ namespace ExperimentalityAPI.Models
         public string frontImageExtension { get; set; }
         public string backImageData { get; set; }
         public string backImageExtension { get; set; }
-        //public IFormFile backImage { get; set; }
         public string country { get; set; }
+        public string consulted { get; set; }
 
-        public void fromProduct(Product product)
+        public void fromProductCreate(ProductCreate product)
         {
             this.name = product.name;
             this.description = product.description;

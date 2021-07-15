@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
 using ExperimentalityAPI.Models;
+using ExperimentalityAPI.Models.Country;
 using ExperimentalityAPI.Repository.Interfaces;
 using ExperimentalityAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,40 +28,49 @@ namespace ExperimentalityAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Endpoint to create countries and its maximun percentage of discount
+        /// </summary>
+        /// <param name="country">CountryCreate{name, maxDiscountPercentage}</param>
+        /// <returns>ResultOperationProject{stateOperation,messageResult,Country}</returns>
         [HttpPost("AddCountry")]
-        [ResponseType(typeof(ResultOperationProject<Country>))]
-        public async Task<OkObjectResult> AddCountryAsync([FromForm]Country country)
+        [ProducesResponseType(typeof(ResultOperationProject<Country>),200)]
+        public async Task<ResultOperationProject<Country>> AddCountryAsync([FromForm]CountryCreate country)
         {
-            try
-            {
-                return await Task.Run(() => Ok(_service.AddCountryAsync(country)));
-            }
-            catch (Exception exc) 
-            {
-
-                var message = exc.Message;
-                return await Task.Run(() => Ok(true));
-            }
-            
-
+           return await _service.AddCountryAsync(country);
         }
 
+        /// <summary>
+        /// Endpoint to update countries name and its maximun percentage of discount
+        /// </summary>
+        /// <param name="country">CountryCreate{name, maxDiscountPercentage,id}</param>
+        /// <returns>ResultOperationProject{stateOperation,messageResult,Country}</returns>
         [HttpPut("UpdateCountry")]
-        public async Task Update([FromForm]Country country)
+        [ProducesResponseType(typeof(ResultOperationProject<Country>), 200)]
+        public async Task<ResultOperationProject<Country>> Update([FromForm]CountryUpdate country)
         {
-            await _service.Update(country);
+            return await _service.Update(country);
         }
 
+        /// <summary>
+        /// Endpoint to delete countries and its maximun percentage of discount
+        /// </summary>
+        /// <param name="id">id string</param>
+        /// <returns>ResultOperationProject{stateOperation,messageResult,Country}</returns>
         [HttpDelete("DeleteCountry")]
-        public async Task Delete([FromForm]string id)
+        public async Task<ResultOperationProject<Country>> Delete([FromForm]string id)
         {
-            await _service.Delete(id);
+            return await _service.Delete(id);
         }
 
+        /// <summary>
+        /// Edpoint to get all contries and its maximun percentage of discount
+        /// </summary>
+        /// <returns>ResultOperationProject{stateOperation,messageResult,Country list}</returns>
         [HttpGet("GetCountry")]
-        public List<Country> Get()
+        public async Task<ResultOperationProject<Country>> Get()
         {
-            return _service.Get();
+            return await _service.Get();
         }
     }
 }
