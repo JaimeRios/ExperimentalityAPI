@@ -18,15 +18,32 @@ namespace ExperimentalityAPI.Services
         }
 
 
-        public async Task AddCountry(Country country)
+        public async Task<ResultOperationProject<Country>> AddCountryAsync(Country country)
         {
+            ResultOperationProject<Country> result = new ResultOperationProject<Country>();
+            result.result = null;
             try
             {
-                await _repository.InsertOneAsync(country);
+                if(_repository.FilterBy(c => c.name == country.name).FirstOrDefault() == null)
+                {
+                    await _repository.InsertOneAsync(country);
+                    result.result = _repository.FilterBy(c => c.name == country.name).FirstOrDefault();
+                    result.messageResult = "Element created successfully";
+                    result.stateOperation = true;
+                }
+                else
+                {
+                    result.messageResult = $"Already exist a country named {country.name}";
+                    result.stateOperation = true;
+                }
+                
+                return result;
             }
             catch (Exception exc)
             {
-                var message = exc.Message;
+                result.stateOperation = true;
+                result.messageResult = exc.Message;
+                return result;
             }
         }
 

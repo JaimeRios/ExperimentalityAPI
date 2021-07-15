@@ -8,7 +8,7 @@ namespace ExperimentalityAPI.Services.Interfaces
 {
     public interface ICountryService
     {
-        Task AddCountry(Country country);
+        Task<ResultOperationProject<Country>> AddCountryAsync(Country country);
 
         Task Update(Country country);
 

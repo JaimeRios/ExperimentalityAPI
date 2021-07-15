@@ -12,12 +12,12 @@ namespace ExperimentalityAPI.Models
     /// Products 
     /// </summary>
     [BsonCollection("Products")]
-    public class Product: Document
+    public class Product
     {
         public string name { get; set; }
         public string description { get; set; }
         public double price { get; set; }
-        public double discountPercentage { get; set; }
+        public int discountPercentage { get; set; }
         public IFormFile frontImage { get; set; }
         public IFormFile backImage { get; set; }
         public string country { get; set; }

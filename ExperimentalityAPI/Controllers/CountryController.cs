@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 using ExperimentalityAPI.Models;
 using ExperimentalityAPI.Repository.Interfaces;
 using ExperimentalityAPI.Services.Interfaces;
@@ -25,10 +28,21 @@ namespace ExperimentalityAPI.Controllers
         }
 
         [HttpPost("AddCountry")]
-        public async Task AddCountry([FromForm]Country country)
+        [ResponseType(typeof(ResultOperationProject<Country>))]
+        public async Task<OkObjectResult> AddCountryAsync([FromForm]Country country)
         {
+            try
+            {
+                return await Task.Run(() => Ok(_service.AddCountryAsync(country)));
+            }
+            catch (Exception exc) 
+            {
 
-            await _service.AddCountry(country);
+                var message = exc.Message;
+                return await Task.Run(() => Ok(true));
+            }
+            
+
         }
 
         [HttpPut("UpdateCountry")]

@@ -14,7 +14,7 @@ namespace ExperimentalityAPI.Models
         public string name { get; set; }
         public string description { get; set; }
         public double price { get; set; }
-        public double discountPercentage { get; set; }
+        public int discountPercentage { get; set; }
         public string frontImageData { get; set; }
         public string frontImageExtension { get; set; }
         public string backImageData { get; set; }
