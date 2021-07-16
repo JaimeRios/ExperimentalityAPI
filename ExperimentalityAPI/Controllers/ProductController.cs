@@ -32,7 +32,7 @@ namespace ExperimentalityAPI.Controllers
         }
 
         /// <summary>
-        /// Register Product
+        /// EndPoint to Register Products
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -44,25 +44,59 @@ namespace ExperimentalityAPI.Controllers
         }
 
         /// <summary>
-        /// GetAll Products
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("getProductData")]
-        public IEnumerable<Product> Get()
-        {
-            return _service.Get();
-        }
-
-        /// <summary>
-        /// Create Products
+        /// EndPoint to Update Products
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        //[HttpPost]
-        //[Route("createProduct")]
-        //public IActionResult createProduct([FromForm] Product product)
-        //{
-        //    return Ok();
-        //}
+        [HttpPut("UpdateProduct")]
+        public async Task<ResultOperationProject<Product>> Update([FromForm]ProductUpdate product)
+        {
+            return await _service.Update(product);
+        }
+
+        /// <summary>
+        /// EndPoint to Delette Products
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteProduct")]
+        public async Task<ResultOperationProject<Product>> Delete([FromForm]string id)
+        {
+            return await _service.Delete(id);
+        }
+
+        /// <summary>
+        /// EndPoint to GetAll Products
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllProducts")]
+        public async Task<ResultOperationProject<Product>> GetAll()
+        {
+            return await _service.Get();
+        }
+
+        /// <summary>
+        /// EndPoints to Get Product by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("GetProductByName")]
+        public async Task<ResultOperationProject<Product>> GetByName(string name)
+        {
+            return await _service.GetByName(name);
+        }
+
+        /// <summary>
+        /// EndPoints to Get specific acount product More Searched
+        /// </summary>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        [HttpGet("GetProductMoreSearched")]
+        public async Task<ResultOperationProject<Product>> GetMoreSearched(int total)
+        {
+            return await _service.GetMoreSearched(total);
+        }
+
+
     }
 }

@@ -3,6 +3,7 @@ using ExperimentalityAPI.Utils.MongoDB;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 
@@ -14,14 +15,34 @@ namespace ExperimentalityAPI.Models.Product
     [BsonCollection("Products")]
     public class ProductCreate
     {
+        [Required]
         public string name { get; set; }
+
+        [Required]
         public string description { get; set; }
+
+        [Required]
+        [Range(1, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public double price { get; set; }
+
+        [Required]
+        [Range(0, 100, ErrorMessage = "Maximun percentage of discont Must be a value betwen 0-100.")]
         public int discountPercentage { get; set; }
+
+        [Required]
         public IFormFile frontImage { get; set; }
+
+        [Required]
         public IFormFile backImage { get; set; }
+
+        [Required]
         public string country { get; set; }
 
+
+        /// <summary>
+        /// Method to convert Product on ProductCreate
+        /// </summary>
+        /// <param name="product"></param>
         public void fromProduct(Product product)
         {
             this.name = product.name;

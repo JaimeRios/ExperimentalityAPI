@@ -10,16 +10,27 @@ using System.Threading.Tasks;
 
 namespace ExperimentalityAPI.Services
 {
+    /// <summary>
+    /// Service for Model Country
+    /// </summary>
     public class CountryService: ICountryService
     {
         private readonly IMongoRepository<Country> _repository;
 
+        /// <summary>
+        /// Country Service Constructor 
+        /// </summary>
+        /// <param name="repository"></param>
         public CountryService(IMongoRepository<Country> repository)
         {
             _repository = repository;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns></returns>
         public async Task<ResultOperationProject<Country>> AddCountryAsync(CountryCreate country)
         {
             ResultOperationProject<Country> result = new ResultOperationProject<Country>();
@@ -28,23 +39,15 @@ namespace ExperimentalityAPI.Services
             {
                 if(_repository.FilterBy(c => c.name == country.name).FirstOrDefault() == null)
                 {
-                    if(country.maxDiscountPercentage <0 || country.maxDiscountPercentage > 100) 
+                    Country newDataCountry = new Country()
                     {
-                        result.messageResult = $"Maximun percentage of discont Must be a value betwen 0-100.";
-                        result.stateOperation = true;
-                    }
-                    else
-                    {
-                        Country newDataCountry = new Country()
-                        {
-                            name = country.name,
-                            maxDiscountPercentage = country.maxDiscountPercentage,
-                        };
-                        await _repository.InsertOneAsync(newDataCountry);
-                        result.result = _repository.FilterBy(c => c.name == country.name).FirstOrDefault();
-                        result.messageResult = $"Element created successfully.";
-                        result.stateOperation = true;
-                    }
+                        name = country.name,
+                        maxDiscountPercentage = country.maxDiscountPercentage,
+                    };
+                    await _repository.InsertOneAsync(newDataCountry);
+                    result.result = _repository.FilterBy(c => c.name == country.name).FirstOrDefault();
+                    result.messageResult = $"Element created successfully.";
+                    result.stateOperation = true;
                     
                 }
                 else
@@ -63,47 +66,42 @@ namespace ExperimentalityAPI.Services
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns></returns>
         public async Task<ResultOperationProject<Country>> Update(CountryUpdate country)
         {
             ResultOperationProject<Country> result = new ResultOperationProject<Country>();
             result.result = null;
             try
             {
-                if (country.maxDiscountPercentage < 0 || country.maxDiscountPercentage > 100)
+                Country coun = new Country();
+                coun.Id = new ObjectId(country.id);
+                if(_repository.FilterBy(c => c.name == country.name && c.Id != coun.Id).FirstOrDefault()==null)
                 {
-                    result.messageResult = $"Maximun percentage of discont Must be a value between 0-100.";
-                    result.stateOperation = true;
-                }
-                else
-                {
-                    Country coun = new Country();
-                    coun.Id = new ObjectId(country.id);
-                    if(_repository.FilterBy(c => c.name == country.name && c.Id != coun.Id).FirstOrDefault()==null)
+                    var countryForUpdate = _repository.FindById(country.id);
+                    if (countryForUpdate.Id != null)
                     {
-                        var countryForUpdate = _repository.FindById(country.id);
-                        if (countryForUpdate.Id != null)
-                        {
-                            countryForUpdate.maxDiscountPercentage = country.maxDiscountPercentage;
-                            countryForUpdate.name = country.name;
-                            await _repository.ReplaceOneAsync(countryForUpdate);
-                            result.result = countryForUpdate;
-                            result.messageResult = $"Element updated successfully.";
-                            result.stateOperation = true;
-                        }
-                        else
-                        {
-                            result.messageResult = $"Does not exist a country whit id '{country.id}'.";
-                            result.stateOperation = false;
-                        }
+                        countryForUpdate.maxDiscountPercentage = country.maxDiscountPercentage;
+                        countryForUpdate.name = country.name;
+                        await _repository.ReplaceOneAsync(countryForUpdate);
+                        result.result = countryForUpdate;
+                        result.messageResult = $"Element updated successfully.";
+                        result.stateOperation = true;
                     }
                     else
                     {
-                        result.messageResult = $"Country element whit name '{country.name}' Duplicate.";
+                        result.messageResult = $"Does not exist a country whit id '{country.id}'.";
                         result.stateOperation = false;
                     }
-                    
                 }
-
+                else
+                {
+                    result.messageResult = $"Country element whit name '{country.name}' Duplicate.";
+                    result.stateOperation = false;
+                }
             }
             catch (Exception exc)
             {
@@ -122,16 +120,22 @@ namespace ExperimentalityAPI.Services
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ResultOperationProject<Country>> Delete(string id)
         {
             ResultOperationProject<Country> result = new ResultOperationProject<Country>();
             result.result = null;
             try
             {
-                var countryForDelete = _repository.FindById(id);
+                var countryForDelete = await _repository.FindByIdAsync(id);
                 if (countryForDelete != null)
                 {
-                    _repository.DeleteById(id);
+                    await _repository.DeleteByIdAsync(id);
+                    result.result = countryForDelete;
                     result.messageResult = $"Element deleted successfully. ";
                     result.stateOperation = true;
                 }
@@ -159,6 +163,10 @@ namespace ExperimentalityAPI.Services
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ResultOperationProject<Country>> Get()
         {
             ResultOperationProject<Country> result = new ResultOperationProject<Country>();

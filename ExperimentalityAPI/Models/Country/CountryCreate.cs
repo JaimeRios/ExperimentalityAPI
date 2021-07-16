@@ -10,7 +10,9 @@ namespace ExperimentalityAPI.Models.Country
     {
         [Required]
         public string name { get; set; }
+
         [Required]
+        [Range(1, 100, ErrorMessage = "Maximun percentage of discont Must be a value betwen 0-100.")]
         public int maxDiscountPercentage { get; set; }
     }
 }

@@ -29,13 +29,12 @@ namespace ExperimentalityAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint to create countries and its maximun percentage of discount
+        /// Endpoint to register countries and its maximun percentage of discount
         /// </summary>
         /// <param name="country">CountryCreate{name, maxDiscountPercentage}</param>
         /// <returns>ResultOperationProject{stateOperation,messageResult,Country}</returns>
         [HttpPost("AddCountry")]
-        [ProducesResponseType(typeof(ResultOperationProject<Country>),200)]
-        public async Task<ResultOperationProject<Country>> AddCountryAsync([FromForm]CountryCreate country)
+        public async Task<ResultOperationProject<Country>> AddCountry([FromForm]CountryCreate country)
         {
            return await _service.AddCountryAsync(country);
         }
@@ -46,7 +45,6 @@ namespace ExperimentalityAPI.Controllers
         /// <param name="country">CountryCreate{name, maxDiscountPercentage,id}</param>
         /// <returns>ResultOperationProject{stateOperation,messageResult,Country}</returns>
         [HttpPut("UpdateCountry")]
-        [ProducesResponseType(typeof(ResultOperationProject<Country>), 200)]
         public async Task<ResultOperationProject<Country>> Update([FromForm]CountryUpdate country)
         {
             return await _service.Update(country);
