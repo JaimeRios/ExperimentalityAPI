@@ -17,17 +17,13 @@ namespace ExperimentalityAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ILogger<ProductController> _logger;
         private readonly IProductService _service;
         /// <summary>
         /// Constructor ProductController
         /// </summary>
-        /// <param name="logger"></param>
         /// <param name="service"></param>
-        public ProductController(ILogger<ProductController> logger,
-            IProductService service)
+        public ProductController(IProductService service)
         {
-            _logger = logger;
             _service = service;
         }
 

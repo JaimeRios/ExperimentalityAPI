@@ -10,7 +10,7 @@ namespace ExperimentalityAPI.Models
         public bool stateOperation { get; set; }
         public string messageResult { get; set; }
         public T result { get; set; }
-
+        public object Result { get; set; }
         public List<T> results { get; set; }
     }
 }
