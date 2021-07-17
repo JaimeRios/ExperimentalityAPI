@@ -326,12 +326,14 @@ namespace ExperimentalityAPI.Services
                     if (data.Count < count)
                     {
                         result.results = data;
+                        result.messageResult = $"There are a total {result.results.Count} of Products registered.";
                     }
                     else
                     {
                         result.results = data.GetRange(0, count);
+                        result.messageResult = $"The {result.results.Count} most consulted product by the name.";
                     }
-                    result.messageResult = $"There are a total {result.results.Count} of Products registered.";
+                    
                     result.stateOperation = true;
                 }
                 else

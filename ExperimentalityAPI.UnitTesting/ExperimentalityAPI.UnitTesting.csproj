@@ -18,4 +18,8 @@
     <ProjectReference Include="..\ExperimentalityAPI\ExperimentalityAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ResourcesForTest\" />
+  </ItemGroup>
+
 </Project>
